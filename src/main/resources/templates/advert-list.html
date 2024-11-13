@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nombre página</title>
+</head>
+<body>
+    <form>
+        User:<input type="text">
+        Pasword:<input type="password">
+        <input type="submit" value="Registrar">
+    </form>
+    <hr>
+    <!--Cambiar esto por unas tarjeticas to guapas-->
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Ver Anuncio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="advert : ${adverts}">
+                <td th:text="${advert.getTitle()}"></td>
+                <td th:text="${advert.getDescription()}"></td>
+                <td th:text="${advert.getPrice()}"></td>
+                <td th:text="${advert.getUser().getUsername()}"></td>
+                <td th:text="${advert.getCreatedAt()}"></td>
+                <td><a th:href="@{/anuncios/ver/{id}(id=${advert.getId()})}">Ver Anuncio</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.shop.wallapop.controller;
 
+import com.shop.wallapop.DTO.AdvertDTO;
 import com.shop.wallapop.entity.Advertisement;
 import com.shop.wallapop.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ public class AdvertController {
     public String index(Model model) {
         return "redirect:/advert";
     }
-    @GetMapping("/advert")
+    @GetMapping("/anuncios")
     public String advert(Model model) {
-        //List<Advertisement> adverts=advertService.getAdverts();
-        //model.addAttribute("adverts",adverts);
+        List<AdvertDTO> adverts=advertService.obtainAdverts();
+        model.addAttribute("adverts",adverts);
         return "advert-list";
     }
 
