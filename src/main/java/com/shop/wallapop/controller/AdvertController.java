@@ -20,8 +20,8 @@ public class AdvertController {
     }
     @GetMapping("/advert")
     public String advert(Model model) {
-        List<Advertisement> adverts=advertService.getAdverts();
-        model.addAttribute("adverts",adverts);
+        //List<Advertisement> adverts=advertService.getAdverts();
+        //model.addAttribute("adverts",adverts);
         return "advert-list";
     }
 

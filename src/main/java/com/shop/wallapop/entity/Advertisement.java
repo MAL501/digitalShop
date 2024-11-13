@@ -27,8 +27,9 @@ public class Advertisement {
     private LocalDateTime createdAt;
     @ManyToOne(targetEntity = User.class)
     private User user;
+    //todo Preguntar a samuel sobre el mapped
     @OneToMany(targetEntity = Picture.class,cascade = CascadeType.ALL,
-            mappedBy="adverts")
+            mappedBy="advertisement")
     private List<Picture> adsPics=new ArrayList<>();
 
 }

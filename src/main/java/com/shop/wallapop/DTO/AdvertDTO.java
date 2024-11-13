@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AdvertDTO {
 private Long id;
-private String title;
-private Double price;
-private String description;
-private LocalDateTime createdAt;
-private User user;
+    private String title;
+    private Double price;
+    private String description;
+    private LocalDateTime createdAt;
+    private User user;
 }
