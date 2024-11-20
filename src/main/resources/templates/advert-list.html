@@ -25,14 +25,16 @@
         </thead>
         <tbody>
             <tr th:each="advert : ${adverts}">
-                <td th:text="${advert.getTitle()}"></td>
-                <td th:text="${advert.getDescription()}"></td>
-                <td th:text="${advert.getPrice()}"></td>
-                <td th:text="${advert.getUser().getUsername()}"></td>
-                <td th:text="${advert.getCreatedAt()}"></td>
+                <td th:text="${advert.getTitle()}"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.getDescription()}"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.getPrice()}+'€'"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.getUser().getUsername()}"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.getCreatedAt()}"><a th:href=""><span></span></a></td>
                 <td><a th:href="@{/anuncios/ver/{id}(id=${advert.getId()})}">Ver Anuncio</a></td>
             </tr>
         </tbody>
     </table>
+    <br>
+    <p>Cantidad de anuncios: <span th:text="${count}"></span></p>
 </body>
 </html>

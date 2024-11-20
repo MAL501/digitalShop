@@ -9,10 +9,23 @@ import java.util.List;
 
 @Service
 public class AdvertService {
+    private final AdvertRepository advertRepository;
     @Autowired
-    private AdvertRepository advertRepository;
-
+    public AdvertService(AdvertRepository advertRepository) {
+        this.advertRepository = advertRepository;
+    }
     public List<AdvertDTO> obtainAdverts() {
         return advertRepository.obtainAllAdvertsDes();
+    }
+    public List<AdvertDTO> obtainAllUserAds(String user) {
+        List<AdvertDTO> ret= advertRepository.obtainAllUserAds(user);
+        return ret;
+    }
+    public void deleteAdvertById(Long id) {
+        advertRepository.deleteById(id);
+    }
+    public AdvertDTO findAdvertById(Long id) {
+        AdvertDTO advert= advertRepository.obtainAdvert(id);
+        return advert;
     }
 }
