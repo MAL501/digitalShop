@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +59,23 @@ public class AdvertController {
     @GetMapping("/anuncios/ver/{id}")
     public String advert(@PathVariable Long id, Model model) {
         Integer count=1;
-        AdvertDTO advert= advertService.findAdvertById(id);
-        model.addAttribute("advert",advert);
+        List<AdvertDTO> advert= advertService.findAdvertById(id);
+        model.addAttribute("adverts",advert);
         model.addAttribute("count",count);
         return "advert-list";
+    }
+    @GetMapping("/anuncios/new")
+    public String newAdvert(Model model) {
+        AdvertDTO advertisement=new AdvertDTO();
+        model.addAttribute("advert",advertisement);
+        return "advert-create";
+    }
+    @PostMapping("/anuncios/new")
+    public String newAdvert(AdvertDTO advertisement) {
+        advertisement.setCreatedAt(LocalDateTime.now());
+        //advertisement.setUser();
+        advertService.saveAdvert(advertisement);
+        return "redirect:/anuncios";
     }
 
 

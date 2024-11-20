@@ -16,5 +16,5 @@ private Long id;
     private Double price;
     private String description;
     private LocalDateTime createdAt;
-    private User user;
+    private UserDTO user;
 }
