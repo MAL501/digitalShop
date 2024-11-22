@@ -1,6 +1,7 @@
 package com.shop.wallapop.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "El nombre es obligatorio")
+    @Column(unique = true, nullable = false)
     private String username;
     private String password;
     @Email
