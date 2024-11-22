@@ -1,7 +1,6 @@
 package com.shop.wallapop.service;
 
 import com.shop.wallapop.DTO.UserDTO;
-import com.shop.wallapop.entity.User;
 import com.shop.wallapop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

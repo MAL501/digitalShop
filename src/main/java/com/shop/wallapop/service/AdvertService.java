@@ -3,7 +3,6 @@ package com.shop.wallapop.service;
 import com.shop.wallapop.DTO.AdvertDTO;
 import com.shop.wallapop.entity.Advertisement;
 import com.shop.wallapop.repository.AdvertRepository;
-import com.shop.wallapop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +34,13 @@ public class AdvertService {
     }
     public String saveAdvert(AdvertDTO advert) {
         Long idAdv= Long.getLong("1");
-        advert.setUser(userService.obtainUser(idAdv));
+        //advert.setUsuario(userService.obtainUser(idAdv));
         advert.setCreatedAt(LocalDateTime.now());
         //todo Convertir el AdvertDTO en un Advert
-        advertRepository.save(advert);
+        //advertRepository.save(advert);
         return "redirect://anuncios";
     }
-    //todo convertir el usuario del dto en un User
+    //todo convertir el usuario del dto en un Usuario
     public Advertisement dtoToAdvertisement(AdvertDTO advert) {
         Advertisement advertisement= new Advertisement();
         advertisement.setTitle(advert.getTitle());

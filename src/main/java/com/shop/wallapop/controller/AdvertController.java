@@ -73,7 +73,7 @@ public class AdvertController {
     @PostMapping("/anuncios/new")
     public String newAdvert(AdvertDTO advertisement) {
         advertisement.setCreatedAt(LocalDateTime.now());
-        //advertisement.setUser();
+        //advertisement.setUsuario();
         advertService.saveAdvert(advertisement);
         return "redirect:/anuncios";
     }
