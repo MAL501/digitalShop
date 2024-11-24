@@ -70,13 +70,15 @@ public class AdvertController {
         model.addAttribute("advert",advertisement);
         return "advert-create";
     }
-    @PostMapping("/anuncios/new")
+/*    @PostMapping("/anuncios/new")
     public String newAdvert(AdvertDTO advertisement) {
         advertisement.setCreatedAt(LocalDateTime.now());
-        //advertisement.setUser();
+        //advertisement.setUsuario();
         advertService.saveAdvert(advertisement);
         return "redirect:/anuncios";
-    }
+    }*/
+    @GetMapping("/login")
+    public String login() {return "redirect:/anuncios";}
 
 
 }

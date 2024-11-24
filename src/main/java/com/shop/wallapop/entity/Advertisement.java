@@ -25,8 +25,8 @@ public class Advertisement {
     private Double price;
     private String description;
     private LocalDateTime createdAt;
-    @ManyToOne(targetEntity = User.class)
-    private User user;
+    @ManyToOne(targetEntity = Usuario.class)
+    private Usuario usuario;
     @OneToMany(targetEntity = Picture.class,cascade = CascadeType.ALL,
             mappedBy="advertisement")
     private List<Picture> adsPics=new ArrayList<>();
