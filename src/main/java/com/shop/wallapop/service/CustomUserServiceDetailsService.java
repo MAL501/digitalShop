@@ -12,20 +12,20 @@ import org.springframework.stereotype.Service;
 //todo PREGUNTAR A SAMUEL SI ESTO SERÍA LO QUE PIDE
 @Service
 public class CustomUserServiceDetailsService  implements UserDetailsService {
-    private final UserRepository userRepository;
-
     @Autowired
-    public CustomUserServiceDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserRepository userRepository;
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-        return User.builder()
+
+          UserDetails user=User.builder()
                 .username(usuario.getEmail())
                 .password(usuario.getPassword())
                 .roles(usuario.getRol())
                 .build();
+          return user;
     }
 }

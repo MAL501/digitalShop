@@ -23,12 +23,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/anuncios").permitAll()
+                                .requestMatchers("/register").permitAll()
                                 .requestMatchers("/anuncios/ver/*").permitAll()
                                 .anyRequest().authenticated()   /* Por ejemplo para la URL "/productos/new" habría que estar autenticado con cualquier ROL */
                 )
                 .formLogin(
                         form -> form
-                                .loginPage("/anuncios")
+                                .loginPage("/login")
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/anuncios")
                                 .failureUrl("/anuncios?errorLogin")

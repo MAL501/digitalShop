@@ -16,5 +16,4 @@ public class Picture {
     private String name;
     @ManyToOne(targetEntity = Advertisement.class)
     private Advertisement advertisement;
-
 }

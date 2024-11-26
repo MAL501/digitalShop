@@ -32,12 +32,8 @@ public class AdvertService {
         List<AdvertDTO> advert= advertRepository.obtainAdvert(id);
         return advert;
     }
-    public String saveAdvert(AdvertDTO advert) {
-        Long idAdv= Long.getLong("1");
-        //advert.setUsuario(userService.obtainUser(idAdv));
-        advert.setCreatedAt(LocalDateTime.now());
-        //todo Convertir el AdvertDTO en un Advert
-        //advertRepository.save(advert);
+    public String saveAdvert(Advertisement advert) {
+        advertRepository.save(advert);
         return "redirect://anuncios";
     }
     //todo convertir el usuario del dto en un Usuario

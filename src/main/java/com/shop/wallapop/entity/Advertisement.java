@@ -30,5 +30,8 @@ public class Advertisement {
     @OneToMany(targetEntity = Picture.class,cascade = CascadeType.ALL,
             mappedBy="advertisement")
     private List<Picture> adsPics=new ArrayList<>();
+    public Picture getFirstPicture() {
+        return adsPics.get(0);
+    }
 
 }

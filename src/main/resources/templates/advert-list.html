@@ -5,11 +5,6 @@
     <title>Nombre página</title>
 </head>
 <body>
-    <form>
-        User:<input type="text">
-        Pasword:<input type="password">
-        <input type="submit" value="Registrar">
-    </form>
     <hr>
     <!--Cambiar esto por unas tarjeticas to guapas-->
     <table>
@@ -20,6 +15,7 @@
                 <th>Precio</th>
                 <th>Usuario</th>
                 <th>Fecha</th>
+                <th>Imagen</th>
                 <th>Ver Anuncio</th>
             </tr>
         </thead>
@@ -30,6 +26,7 @@
                 <td th:text="${advert.getPrice()}+'€'"><a th:href=""><span></span></a></td>
                 <td th:text="${advert.getUser().getUsername()}"><a th:href=""><span></span></a></td>
                 <td th:text="${advert.getCreatedAt()}"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.getFirstPicture()}"><a th:href=""><span></span></a></td>
                 <td><a th:href="@{/anuncios/ver/{id}(id=${advert.getId()})}">Ver Anuncio</a></td>
             </tr>
         </tbody>
