@@ -36,12 +36,7 @@ public class AdvertService {
         advertRepository.save(advert);
         return "redirect://anuncios";
     }
-    //todo convertir el usuario del dto en un Usuario
-    public Advertisement dtoToAdvertisement(AdvertDTO advert) {
-        Advertisement advertisement= new Advertisement();
-        advertisement.setTitle(advert.getTitle());
-        advertisement.setDescription(advert.getDescription());
-        advertisement.setPrice(advert.getPrice());
-        return advertisement;
+    public void actualizarAdvert(Advertisement advert) {
+        advertRepository.updateAdvert(advert.getPrice(),advert.getId(),advert.getTitle(),advert.getDescription());
     }
 }

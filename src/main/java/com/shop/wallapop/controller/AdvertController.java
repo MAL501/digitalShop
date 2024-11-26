@@ -2,6 +2,7 @@ package com.shop.wallapop.controller;
 
 import com.shop.wallapop.DTO.AdvertDTO;
 import com.shop.wallapop.entity.Advertisement;
+import com.shop.wallapop.entity.Picture;
 import com.shop.wallapop.entity.Usuario;
 import com.shop.wallapop.service.AdvertService;
 import com.shop.wallapop.service.PictureService;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -106,4 +108,25 @@ public class AdvertController {
             return "redirect:/login";
         }
     }
+    @GetMapping("/anuncios/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("advert",advertService.findAdvertById(id));
+        return "advert-edit";
+    }
+    @PostMapping("/anuncios/{id}/edit")
+    public String editar(Model model, @Valid Advertisement advertisement, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "advert-edit";
+        }else{
+            advertService.actualizarAdvert(advertisement);
+        }
+        return "redirect:/anuncios/{id}";
+    }
+
+    @GetMapping("/misAnuncios")
+    public String misAnuncios(Model model, @AuthenticationPrincipal Usuario usuairo) {
+        model.addAttribute("adverts",advertService.obtainAllUserAds(usuairo.getEmail()));
+        return "advert-list";
+    }
 }
+
