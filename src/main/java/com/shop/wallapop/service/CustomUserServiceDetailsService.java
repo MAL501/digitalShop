@@ -1,4 +1,4 @@
-package com.shop.wallapop.service;
+/*package com.shop.wallapop.service;
 
 import com.shop.wallapop.entity.Usuario;
 import com.shop.wallapop.repository.UserRepository;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-//todo PREGUNTAR A SAMUEL SI ESTO SERÍA LO QUE PIDE
 @Service
 public class CustomUserServiceDetailsService  implements UserDetailsService {
     @Autowired
@@ -29,3 +28,4 @@ public class CustomUserServiceDetailsService  implements UserDetailsService {
           return user;
     }
 }
+*/

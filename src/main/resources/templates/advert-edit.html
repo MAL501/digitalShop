@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar anuncio</title>
+</head>
+<body>
+    <form th:action="@{/anuncios/new}" method="post" th:object="${advert}" enctype="multipart/form-data">
+        Título:<input type="text" name="title" id="title" th:field="*{title}">
+        Precio:<input type="number" name="price" id="price" th:field="*{price}">
+        Descripción:<textarea name="description" id="description" th:field="*{description}"></textarea>
+        <input type="file" name="archivosFotos" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
+        <input type="submit" value="Publicar">
+    </form>
+
+</body>
+</html>

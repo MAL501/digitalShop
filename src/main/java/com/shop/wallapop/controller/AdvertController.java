@@ -9,8 +9,6 @@ import com.shop.wallapop.service.PictureService;
 import com.shop.wallapop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,14 +25,15 @@ import java.util.List;
 public class AdvertController {
     private final AdvertService advertService;
     private final PictureService pictureService;
-    private final PasswordEncoder passwordEncoder;
+    //todo Cuando todo funcione implementar
+    /*private final PasswordEncoder passwordEncoder;*/
     private final UserService userService;
 
     @Autowired
-    public AdvertController(AdvertService advertService, PictureService pictureService, PasswordEncoder passwordEncoder, UserService userService) {
+    public AdvertController(AdvertService advertService, PictureService pictureService, /*PasswordEncoder passwordEncoder,*/ UserService userService) {
         this.advertService = advertService;
         this.pictureService = pictureService;
-        this.passwordEncoder = passwordEncoder;
+        /*this.passwordEncoder = passwordEncoder;*/
         this.userService = userService;
     }
     @GetMapping("/")
@@ -44,7 +43,7 @@ public class AdvertController {
     @GetMapping("/anuncios")
     public String advert(Model model) {
         Integer count=0;
-        List<AdvertDTO> adverts=advertService.obtainAdverts();
+        List<Advertisement> adverts=advertService.obtainAdverts();
         count=adverts.size();
         model.addAttribute("count",count);
         model.addAttribute("adverts",adverts);
@@ -84,7 +83,7 @@ public class AdvertController {
         return "advert-create";
     }
     @PostMapping("/anuncios/new")
-    public String newAdvert(Advertisement advertisement, @AuthenticationPrincipal Usuario usuairo) {
+    public String newAdvert(Advertisement advertisement, Usuario usuairo) {
         advertisement.setCreatedAt(LocalDateTime.now());
         advertisement.setUsuario(usuairo);
         advertService.saveAdvert(advertisement);
@@ -101,9 +100,9 @@ public class AdvertController {
         if (bindingResult.hasErrors()) {
             return "registro";
         } else {
-            String encryptedPassword = passwordEncoder.encode(usuario.getPassword());
+            /*String encryptedPassword = passwordEncoder.encode(usuario.getPassword());*/
             usuario.setRol("ADMIN");
-            usuario.setPassword(encryptedPassword);
+            /*usuario.setPassword(encryptedPassword);*/
             userService.save(usuario);
             return "redirect:/login";
         }
@@ -124,9 +123,19 @@ public class AdvertController {
     }
 
     @GetMapping("/misAnuncios")
-    public String misAnuncios(Model model, @AuthenticationPrincipal Usuario usuairo) {
+    public String misAnuncios(Model model, Usuario usuairo) {
         model.addAttribute("adverts",advertService.obtainAllUserAds(usuairo.getEmail()));
         return "advert-list";
+    }
+    @GetMapping("/anuncios/{user}/{id}/edit")
+    public String edit(@PathVariable Long user, @PathVariable Long id, Model model, Usuario usuario) {
+        if(!user.equals(usuario.getUsername())){
+            model.addAttribute("adverts",advertService.obtainAdverts());
+            return "redirect:/anuncios";
+        }else{
+            model.addAttribute("advert",advertService.findAdvertById(id));
+            return "advert-edit";
+        }
     }
 }
 

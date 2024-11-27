@@ -1,4 +1,4 @@
-package com.shop.wallapop.config;
+/*package com.shop.wallapop.config;
 
 import com.shop.wallapop.service.CustomUserServiceDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class SecurityConfig {
                                 .requestMatchers("/anuncios").permitAll()
                                 .requestMatchers("/register").permitAll()
                                 .requestMatchers("/anuncios/ver/*").permitAll()
-                                .anyRequest().authenticated()   /* Por ejemplo para la URL "/productos/new" habría que estar autenticado con cualquier ROL */
+                                .anyRequest().authenticated()   /* Por ejemplo para la URL "/productos/new" habría que estar autenticado con cualquier ROL
                 )
                 .formLogin(
                         form -> form
@@ -57,3 +57,5 @@ public class SecurityConfig {
         return provider;
     }
 }
+*/
+

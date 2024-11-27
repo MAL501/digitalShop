@@ -14,7 +14,7 @@ public interface AdvertRepository extends JpaRepository<Advertisement, Long> {
 
     @Query("SELECT new com.shop.wallapop.DTO.AdvertDTO(a.id,a.title,a.price,a.description,a.createdAt,a.usuario)"+
             "FROM Advertisement a ORDER BY a.createdAt DESC")
-    List<AdvertDTO> obtainAllAdvertsDes();
+    List<Advertisement> obtainAllAdvertsDes();
 
     @Query("SELECT new com.shop.wallapop.DTO.AdvertDTO(a.id,a.title,a.price,a.description,a.createdAt,a.usuario)"+
             "FROM Advertisement a WHERE a.usuario.username=:adv_usr")

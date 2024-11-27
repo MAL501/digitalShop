@@ -18,7 +18,7 @@ public class AdvertService {
         this.advertRepository = advertRepository;
         this.userService =userService;
     }
-    public List<AdvertDTO> obtainAdverts() {
+    public List<Advertisement> obtainAdverts() {
         return advertRepository.obtainAllAdvertsDes();
     }
     public List<AdvertDTO> obtainAllUserAds(String user) {
