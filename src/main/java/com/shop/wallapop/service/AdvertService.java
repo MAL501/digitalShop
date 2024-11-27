@@ -6,37 +6,29 @@ import com.shop.wallapop.repository.AdvertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdvertService {
     private final AdvertRepository advertRepository;
-    private final UserService userService;
     @Autowired
-    public AdvertService(AdvertRepository advertRepository, UserService userService) {
+    public AdvertService(AdvertRepository advertRepository) {
         this.advertRepository = advertRepository;
-        this.userService =userService;
     }
     public List<Advertisement> obtainAdverts() {
-        return advertRepository.obtainAllAdvertsDes();
+        return advertRepository.findAll();
+        //return advertRepository.obtainAllAdvertsDes();
     }
-    public List<AdvertDTO> obtainAllUserAds(String user) {
-        List<AdvertDTO> ret= advertRepository.obtainAllUserAds(user);
+    public List<Advertisement> obtainAllUserAds(String user) {
+        List<Advertisement> ret= advertRepository.obtainAllUserAds(user);
         return ret;
     }
     public void deleteAdvertById(Long id) {
         advertRepository.deleteById(id);
     }
-    public List<AdvertDTO> findAdvertById(Long id) {
-        List<AdvertDTO> advert= advertRepository.obtainAdvert(id);
+    public Optional<Advertisement> findAdvertById(Long id) {
+        Optional<Advertisement> advert= advertRepository.findById(id);
         return advert;
-    }
-    public String saveAdvert(Advertisement advert) {
-        advertRepository.save(advert);
-        return "redirect://anuncios";
-    }
-    public void actualizarAdvert(Advertisement advert) {
-        advertRepository.updateAdvert(advert.getPrice(),advert.getId(),advert.getTitle(),advert.getDescription());
     }
 }

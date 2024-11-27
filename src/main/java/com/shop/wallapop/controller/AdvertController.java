@@ -2,42 +2,48 @@ package com.shop.wallapop.controller;
 
 import com.shop.wallapop.DTO.AdvertDTO;
 import com.shop.wallapop.entity.Advertisement;
-import com.shop.wallapop.entity.Picture;
-import com.shop.wallapop.entity.Usuario;
+import com.shop.wallapop.entity.User;
 import com.shop.wallapop.service.AdvertService;
 import com.shop.wallapop.service.PictureService;
-import com.shop.wallapop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AdvertController {
     private final AdvertService advertService;
     private final PictureService pictureService;
-    //todo Cuando todo funcione implementar
-    /*private final PasswordEncoder passwordEncoder;*/
-    private final UserService userService;
-
+    private User user;
     @Autowired
-    public AdvertController(AdvertService advertService, PictureService pictureService, /*PasswordEncoder passwordEncoder,*/ UserService userService) {
+    public AdvertController(AdvertService advertService,PictureService pictureService) {
         this.advertService = advertService;
         this.pictureService = pictureService;
-        /*this.passwordEncoder = passwordEncoder;*/
-        this.userService = userService;
+        this.user = new User();
+        this.user.setPhone("66666");
+        this.user.setPoblation("Cuenca");
     }
     @GetMapping("/")
     public String index(Model model) {
+        return "redirect:/login";
+    }
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("user", this.user);
+        return "login";
+    }
+    @PostMapping("/login")
+    public String loginPost(Model model) {
+        this.user.setEmail(this.user.getUsername()+"@gmail.com");
         return "redirect:/anuncios";
     }
     @GetMapping("/anuncios")
@@ -52,7 +58,7 @@ public class AdvertController {
     @GetMapping("/anuncios/{user}")
     public String advert(@PathVariable String user, Model model) {
         Integer count=0;
-        List<AdvertDTO> adverts=advertService.obtainAllUserAds(user);
+        List<Advertisement> adverts=advertService.obtainAllUserAds(user);
         count=adverts.size();
         model.addAttribute("count",count);
         model.addAttribute("adverts",adverts);
@@ -62,7 +68,7 @@ public class AdvertController {
     public String advert(@PathVariable String user, @PathVariable Long id, Model model) {
         Integer count=0;
         advertService.deleteAdvertById(id);
-        List<AdvertDTO> adverts=advertService.obtainAllUserAds(user);
+        List<Advertisement> adverts=advertService.obtainAllUserAds(user);
         count=adverts.size();
         model.addAttribute("adverts",adverts);
         model.addAttribute("count",count);
@@ -70,72 +76,23 @@ public class AdvertController {
     }
     @GetMapping("/anuncios/ver/{id}")
     public String advert(@PathVariable Long id, Model model) {
-        Integer count=1;
-        List<AdvertDTO> advert= advertService.findAdvertById(id);
-        model.addAttribute("adverts",advert);
-        model.addAttribute("count",count);
-        return "advert-list";
+        Optional<Advertisement> advert= advertService.findAdvertById(id);
+        Advertisement advertisement=advert.get();
+        model.addAttribute("advert",advertisement);
+        return "advert-view";
     }
     @GetMapping("/anuncios/new")
     public String newAdvert(Model model) {
         Advertisement advertisement=new Advertisement();
-        model.addAttribute("advert",advertisement);
-        return "advert-create";
+        advertisement.setUser(user);
+        advertisement.setCreatedAt(LocalDateTime.now());
+        model.addAttribute("advert",new Advertisement());
+        return "advert-new";
     }
     @PostMapping("/anuncios/new")
-    public String newAdvert(Advertisement advertisement, Usuario usuairo) {
-        advertisement.setCreatedAt(LocalDateTime.now());
-        advertisement.setUsuario(usuairo);
-        advertService.saveAdvert(advertisement);
-        return "redirect:/anuncios";
-    }
-    @GetMapping("/register")
-    public String registro(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "registro";
+    public String newAdvert(@Valid Advertisement advert){
+
+        return "redirect:/anuncios/ver/"+advert.getId();
     }
 
-    @PostMapping("/register")
-    public String alta(Model model, @Valid Usuario usuario, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "registro";
-        } else {
-            /*String encryptedPassword = passwordEncoder.encode(usuario.getPassword());*/
-            usuario.setRol("ADMIN");
-            /*usuario.setPassword(encryptedPassword);*/
-            userService.save(usuario);
-            return "redirect:/login";
-        }
-    }
-    @GetMapping("/anuncios/{id}/edit")
-    public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("advert",advertService.findAdvertById(id));
-        return "advert-edit";
-    }
-    @PostMapping("/anuncios/{id}/edit")
-    public String editar(Model model, @Valid Advertisement advertisement, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "advert-edit";
-        }else{
-            advertService.actualizarAdvert(advertisement);
-        }
-        return "redirect:/anuncios/{id}";
-    }
-
-    @GetMapping("/misAnuncios")
-    public String misAnuncios(Model model, Usuario usuairo) {
-        model.addAttribute("adverts",advertService.obtainAllUserAds(usuairo.getEmail()));
-        return "advert-list";
-    }
-    @GetMapping("/anuncios/{user}/{id}/edit")
-    public String edit(@PathVariable Long user, @PathVariable Long id, Model model, Usuario usuario) {
-        if(!user.equals(usuario.getUsername())){
-            model.addAttribute("adverts",advertService.obtainAdverts());
-            return "redirect:/anuncios";
-        }else{
-            model.addAttribute("advert",advertService.findAdvertById(id));
-            return "advert-edit";
-        }
-    }
 }
-

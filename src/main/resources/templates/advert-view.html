@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Nombre página</title>
+</head>
+<body>
+    <hr>
+    <!--Cambiar esto por unas tarjeticas to guapas-->
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Fecha</th>
+                <!--
+                <th>Imagen</th>
+                -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${advert.title}"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.description}"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.price}+'€'"><a th:href=""><span></span></a></td>
+                <td th:text="${advert.createdAt}"><a th:href=""><span></span></a></td>
+                <td><a th:href="@{/anuncios}">Ver Anuncios</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <div th:each="picture : ${advert.getAdsPics()}">
+        <img th:src="@{'/advertsPictures/' + ${picture.getName()}}" height="120px">
+    </div>
+</body>
+</html>

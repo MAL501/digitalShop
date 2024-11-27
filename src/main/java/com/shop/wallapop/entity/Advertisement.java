@@ -1,5 +1,6 @@
 package com.shop.wallapop.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -25,13 +26,11 @@ public class Advertisement {
     private Double price;
     private String description;
     private LocalDateTime createdAt;
-    @ManyToOne(targetEntity = Usuario.class)
-    private Usuario usuario;
+    @ManyToOne(targetEntity = User.class)
+    private User user;
+    @NotNull
     @OneToMany(targetEntity = Picture.class,cascade = CascadeType.ALL,
             mappedBy="advertisement")
     private List<Picture> adsPics=new ArrayList<>();
-    public Picture getFirstPicture() {
-        return adsPics.get(0);
-    }
 
 }

@@ -1,7 +1,5 @@
 package com.shop.wallapop.service;
 
-
-import com.shop.wallapop.DTO.PictureDTO;
 import com.shop.wallapop.entity.Advertisement;
 import com.shop.wallapop.entity.Picture;
 import com.shop.wallapop.repository.AdvertRepository;
@@ -27,51 +25,27 @@ public class PictureService {
     private static final String UPLOADS_DIRECTORY = "uploads/imagesProductos";
 
     @Autowired
-    private PictureRepository pictureRepository;
+    PictureRepository pictureRepository;
     @Autowired
-    private AdvertRepository advertRepository;
+    AdvertRepository advertRepository;
+    public List<Picture> guardarFotos(List<MultipartFile> pictures, Advertisement advertisement) {
+        List<Picture> fotos = new ArrayList<>();
+        for(MultipartFile picture : pictures) {
+            if(!picture.isEmpty()) {
+                validarArchivo(picture);
+                String pictureName= picture.getOriginalFilename();
+                guardarArchivo(picture, pictureName);
 
-    public List<PictureDTO>obtainPictures() {return pictureRepository.obtainAllPictures();}
-    public List<PictureDTO>obtainPicturesById(Long id) {return pictureRepository.obtainAllPicturesById(id);}
-    public List<Picture> guardarFotos(List<MultipartFile> fotos, Advertisement advertisement) {
-
-        List<Picture> listaFotos = new ArrayList<>();
-
-        for (MultipartFile foto : fotos) {
-            if (!foto.isEmpty()) {
-                validarArchivo(foto);
-                String nombreFoto = generarNombreUnico(foto);
-                guardarArchivo(foto, nombreFoto);
-
-                Picture fotoProducto = Picture.builder()
-                        .name(nombreFoto)
+                Picture foto = Picture.builder()
+                        .name(pictureName)
                         .advertisement(advertisement).build();
-
-                listaFotos.add(fotoProducto);
+                fotos.add(foto);
             }
         }
-
-        advertisement.setAdsPics(listaFotos);
-        return listaFotos;
+        advertisement.setAdsPics(fotos);
+        return fotos;
     }
-
-    public void addFoto(MultipartFile foto, Advertisement advertisement) {
-
-        if (!foto.isEmpty()) {
-            validarArchivo(foto);
-            String nombreFoto = generarNombreUnico(foto);
-            guardarArchivo(foto, nombreFoto);
-
-            Picture picture = Picture.builder()
-                    .name(nombreFoto)
-                    .advertisement(advertisement).build();
-
-
-            advertisement.getAdsPics().add(picture);
-            advertRepository.save(advertisement);
-        }
-    }
-
+    /*Vale para todos cp cv*/
     public void validarArchivo(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("Archivo no seleccionado");
@@ -82,8 +56,8 @@ public class PictureService {
         if (file.getSize() > MAX_FILE_SIZE) {
             throw new IllegalArgumentException("Archivo demasiado grande. Sólo se admiten archivos < 10MB");
         }
-    }
 
+    }
     public String generarNombreUnico(MultipartFile file) {
         UUID nombreUnico = UUID.randomUUID();
         String extension;
@@ -94,7 +68,6 @@ public class PictureService {
         }
         return nombreUnico + extension;
     }
-
     public void guardarArchivo(MultipartFile file, String nuevoNombreFoto) {
         Path ruta = Paths.get(UPLOADS_DIRECTORY + File.separator + nuevoNombreFoto);
         //Movemos el archivo a la carpeta y guardamos su nombre en el objeto catgoría
@@ -106,11 +79,10 @@ public class PictureService {
             throw new RuntimeException("Error al guardar archivo", e);
         }
     }
-
-    public void deleteFoto(Long idFoto) {
-        Optional<Picture> pictureOptional = pictureRepository.findById(idFoto);
-        if(pictureOptional.isPresent()){
-            Picture picture = pictureOptional.get();
+    public void deletePicture(Long idFoto) {
+        Optional<Picture> fotoProductoOptional = pictureRepository.findById(idFoto);
+        if(fotoProductoOptional.isPresent()){
+            Picture picture  = fotoProductoOptional.get();
             Path archivoFoto = Paths.get(picture.getName());
             try {
                 Files.deleteIfExists(archivoFoto);
@@ -120,4 +92,6 @@ public class PictureService {
             pictureRepository.deleteById(idFoto);
         }
     }
+
+
 }
