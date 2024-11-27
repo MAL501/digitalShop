@@ -1,6 +1,6 @@
 package com.shop.wallapop.service;
 
-import com.shop.wallapop.entity.Usuario;
+import com.shop.wallapop.entity.User;
 import com.shop.wallapop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<Usuario> obtainUser(String email) {
-        Optional<Usuario> usuario = userRepository.findByEmail(email);
+    public Optional<User> obtainUser(String email) {
+        Optional<User> usuario = userRepository.findByEmail(email);
         return usuario;
     }
-    public void save(Usuario usuario) {
+    public void save(User usuario) {
         userRepository.save(usuario);
     }
 }

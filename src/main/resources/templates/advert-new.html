@@ -5,11 +5,10 @@
   <title>Crear anuncio</title>
 </head>
 <body>
-  <form th:action="@{/anuncios/new}" method="post" th:object="advert">
-    Producto:<input type="text" th:field=""><br>
-    Precio:<input type="number" th:field=""><br>
-    Descripción:<textarea th:field=""></textarea><br>
-    Imágenes:<input type="file" th:field=""><br>
+  <form th:action="@{/anuncios/new}" method="post" th:object="${advert}">
+    Producto:<input type="text" th:field="${advert.title}"><br>
+    Precio:<input type="number" th:field="${advert.price}"><br>
+    Descripción:<textarea th:field="${advert.description}"></textarea><br>
     <div class="contenedorFotosProductosInsert" >
       <div class="fotoProductoInsert" onclick="triggerFileInput(this)">
         <input type="file" name="archivosFotos" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
@@ -21,6 +20,7 @@
         <input type="file" name="archivosFotos" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
       </div>
     </div>
+    <input type="submit" value="Crear">
   </form>
 
 

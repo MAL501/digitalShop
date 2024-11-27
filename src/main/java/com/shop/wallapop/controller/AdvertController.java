@@ -3,6 +3,7 @@ package com.shop.wallapop.controller;
 import com.shop.wallapop.DTO.AdvertDTO;
 import com.shop.wallapop.entity.Advertisement;
 import com.shop.wallapop.entity.User;
+import com.shop.wallapop.repository.UserRepository;
 import com.shop.wallapop.service.AdvertService;
 import com.shop.wallapop.service.PictureService;
 import jakarta.validation.Valid;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,14 +26,16 @@ import java.util.Optional;
 public class AdvertController {
     private final AdvertService advertService;
     private final PictureService pictureService;
+    private final UserRepository userRepository;
     private User user;
     @Autowired
-    public AdvertController(AdvertService advertService,PictureService pictureService) {
+    public AdvertController(AdvertService advertService, PictureService pictureService, UserRepository userRepository) {
         this.advertService = advertService;
         this.pictureService = pictureService;
         this.user = new User();
         this.user.setPhone("66666");
         this.user.setPoblation("Cuenca");
+        this.userRepository = userRepository;
     }
     @GetMapping("/")
     public String index(Model model) {
@@ -42,8 +47,11 @@ public class AdvertController {
         return "login";
     }
     @PostMapping("/login")
-    public String loginPost(Model model) {
+    public String loginPost(@RequestParam(value = "userName") String name, @RequestParam(value = "password") String password) {
+        this.user.setUsername(name);
+        this.user.setPassword(password);
         this.user.setEmail(this.user.getUsername()+"@gmail.com");
+        userRepository.save(this.user);
         return "redirect:/anuncios";
     }
     @GetMapping("/anuncios")
@@ -84,14 +92,16 @@ public class AdvertController {
     @GetMapping("/anuncios/new")
     public String newAdvert(Model model) {
         Advertisement advertisement=new Advertisement();
-        advertisement.setUser(user);
-        advertisement.setCreatedAt(LocalDateTime.now());
+
         model.addAttribute("advert",new Advertisement());
         return "advert-new";
     }
     @PostMapping("/anuncios/new")
-    public String newAdvert(@Valid Advertisement advert){
-
+    public String newAdvert(@Valid Advertisement advert,
+                            @RequestParam(value = "picturesFiles") List<MultipartFile> picturesFiles){
+        advert.setUser(user);
+        advert.setCreatedAt(LocalDateTime.now());
+        advertService.saveAdvert(advert, picturesFiles);
         return "redirect:/anuncios/ver/"+advert.getId();
     }
 

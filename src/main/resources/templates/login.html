@@ -5,9 +5,11 @@
     <title>Login</title>
 </head>
 <body>
-    <form th:action="@{/login}" method="post" th:object="${user}">
-        Usuario:<input type="text" name="name" th:field="${user.username}"><br>
-        Contraseña:<input type="password" name="passwd" th:field="${user.password}"><br>
+    <form th:action="@{/login}" method="post">
+        <label for="userName">Usuario:</label>
+        <input type="text" name="userName"><br>
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password"><br>
         <input type="submit" value="Entrar">
     </form>
 </body>

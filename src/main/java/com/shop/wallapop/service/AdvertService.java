@@ -5,17 +5,17 @@ import com.shop.wallapop.entity.Advertisement;
 import com.shop.wallapop.repository.AdvertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AdvertService {
-    private final AdvertRepository advertRepository;
     @Autowired
-    public AdvertService(AdvertRepository advertRepository) {
-        this.advertRepository = advertRepository;
-    }
+    AdvertRepository advertRepository;
+    @Autowired
+    PictureService pictureService;
     public List<Advertisement> obtainAdverts() {
         return advertRepository.findAll();
         //return advertRepository.obtainAllAdvertsDes();
@@ -30,5 +30,9 @@ public class AdvertService {
     public Optional<Advertisement> findAdvertById(Long id) {
         Optional<Advertisement> advert= advertRepository.findById(id);
         return advert;
+    }
+    public void saveAdvert(Advertisement advert, List<MultipartFile> files) {
+        advertRepository.save(advert);
+        pictureService.guardarFotos(files,advert);
     }
 }

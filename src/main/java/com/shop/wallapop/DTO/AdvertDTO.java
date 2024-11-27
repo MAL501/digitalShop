@@ -1,6 +1,6 @@
 package com.shop.wallapop.DTO;
 
-import com.shop.wallapop.entity.Usuario;
+import com.shop.wallapop.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ private Long id;
     private Double price;
     private String description;
     private LocalDateTime createdAt;
-    private Usuario usuario;
+    private User usuario;
 }

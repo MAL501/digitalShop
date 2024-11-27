@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Table(name="users")
 @ToString(exclude = "userAds")
-public class Usuario {
+public class User {
     //No añadir import de ID da fallo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Usuario {
     private String phone;
     private String poblation;
     @OneToMany(targetEntity = Advertisement.class,cascade = CascadeType.ALL,
-        mappedBy="usuario")
+        mappedBy="user")
     private List<Advertisement> userAds=new ArrayList<>();
     private String rol;
 
