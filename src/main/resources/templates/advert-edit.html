@@ -1,63 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <title>Crear anuncio</title>
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/672cc63c77.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <form th:action="@{/anuncios/new}" method="post" th:object="${advert}" enctype="multipart/form-data">
     Producto:<input type="text" th:field="${advert.title}"><br>
     Precio:<input type="number" th:field="${advert.price}"><br>
     Descripción:<textarea th:field="${advert.description}"></textarea><br>
-    <div class="contenedorFotosProductosInsert" >
-      <div class="fotoProductoInsert" onclick="triggerFileInput(this)">
-        <input type="file" name="picturesFiles" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
+    <div class="foto-container">
+      <div th:each="foto : ${advert.adsPics}"
+           class="foto"
+           th:style="'background-image: url(/advertsPictures/' + ${foto.name} + ');'">
+        <a th:href="@{/anuncios/{id1}/pictures/{id2}/del(id1=${advert.id}, id2=${foto.id})}">X</a>
+      </div>
+      <div class="foto" id="nuevaFoto">
+        <i class="fa-regular fa-image"></i>
       </div>
     </div>
-    <input type="submit" value="Crear">
+    <input type="submit" value="Editar">
   </form>
 
-  <script>
-    // Abre el cuadro de selección de archivos del input correspondiente
-    function triggerFileInput(caja) {
-      caja.querySelector('.file-input').click();
-    }
+  <script type="text/javascript">
+    document.getElementById("nuevaFoto").addEventListener("click", function () {
+      document.getElementById("nuevoArchivo").click();
+    } );
 
-    // Previsualiza la imagen seleccionada dentro de la caja
-    function previewImage(input) {
-      const file = input.files[0];
-      const tiposPermitidos = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-
-      if(file && !tiposPermitidos.includes(file.type)){
-        alert("Por favor, selecciona un archivo de imagen válido (JPEG, PNG, GIF o WEBP).");
-      }
-      else {
-        if (file) {
-          const reader = new FileReader();
-
-          reader.onload = function (e) {
-            let img = input.parentElement.querySelector('img');
-            // Si ya existe una imagen, la reutilizamos; si no, creamos una nueva
-            if (!img) {
-              img = document.createElement('img');
-              input.parentElement.appendChild(img);
-            }
-
-            img.src = e.target.result; // Asigna la imagen como fondo de la caja
-          };
-
-          reader.readAsDataURL(file);
-
-
-        } else {    //No ha seleccionado archivo y hay foto la foto
-          let img = input.parentElement.querySelector('img');
-
-          if (img) {
-            img.remove();
-          }
-        }
-      }
-    }
+    document.getElementById("nuevoArchivo").addEventListener("change", function () {
+      document.getElementById("formulario-add-foto").submit();
+    })
   </script>
 
 

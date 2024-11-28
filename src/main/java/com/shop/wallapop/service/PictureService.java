@@ -45,6 +45,22 @@ public class PictureService {
         advertisement.setAdsPics(fotos);
         return fotos;
     }
+    public void addFoto(MultipartFile foto, Advertisement advert) {
+
+        if (!foto.isEmpty()) {
+            validarArchivo(foto);
+            String nombreFoto = generarNombreUnico(foto);
+            guardarArchivo(foto, nombreFoto);
+
+            Picture pictureAdvert = Picture.builder()
+                    .name(nombreFoto)
+                    .advertisement(advert).build();
+
+
+            advert.getAdsPics().add(pictureAdvert);
+            advertRepository.save(advert);
+        }
+    }
     /*Vale para todos cp cv*/
     public void validarArchivo(MultipartFile file) {
         if (file == null || file.isEmpty()) {

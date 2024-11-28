@@ -2,6 +2,7 @@ package com.shop.wallapop.controller;
 
 import com.shop.wallapop.DTO.AdvertDTO;
 import com.shop.wallapop.entity.Advertisement;
+import com.shop.wallapop.entity.Picture;
 import com.shop.wallapop.entity.User;
 import com.shop.wallapop.repository.UserRepository;
 import com.shop.wallapop.service.AdvertService;
@@ -107,5 +108,34 @@ public class AdvertController {
         advertService.saveAdvert(advert);
         return "redirect:/anuncios/ver/"+advert.getId();
     }
-
+    @GetMapping("/anuncios/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        try{
+            Optional<Advertisement> advert= advertService.findAdvertById(id);
+            model.addAttribute("advert",advert.get());
+            return "advert-edit";
+        }catch(IllegalArgumentException ex){
+            return "redirect:/anuncios";
+        }
+    }
+    @PostMapping("/anuncios/{id}/edit")
+    public String editAdvert(@PathVariable("id")Long id, Advertisement advert){
+        advert.setId(id);
+        advertService.saveAdvert(advert);
+        return "redirect:/anuncios/ver/"+advert.getId();
+    }
+    @GetMapping("/anuncios/{id1}/pictures/{id2}/del")
+    public String delete(@PathVariable Long idAdvert, @PathVariable Long idPicture, Model model) {
+        pictureService.deletePicture(idPicture);
+        return "redirect:/anuncios/"+idAdvert+"/edit";
+    }
+    @PostMapping("/anuncios/{id}/edit/addPictures")
+    public String addPictures(@PathVariable Long idAdvert,
+                              @RequestParam(value = "picturesFiles") MultipartFile archivoPicture){
+        Optional<Advertisement> advert= advertService.findAdvertById(idAdvert);
+        if(advert.isPresent()){
+            pictureService.addFoto(archivoPicture, advert.get());
+        }
+        return "redirect:/anuncios/"+idAdvert+"/edit";
+    }
 }
