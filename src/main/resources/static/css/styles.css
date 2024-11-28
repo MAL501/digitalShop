@@ -1,3 +1,4 @@
+/* Clases específicas utilizadas en el HTML proporcionado */
 .foto-container {
     display: flex; /* Para alinear las capas horizontalmente */
     flex-wrap: wrap; /* Para permitir que las capas salten a la siguiente línea */
@@ -13,50 +14,114 @@
     position: relative;
 }
 
-
- .contenedorFotosProductosInsert {
-     display: flex;
-     flex-wrap: wrap;
-     gap: 10px; /* Espacio entre los elementos */
-     padding: 10px;
- }
-.fotoProductoInsert {
-    width: 100px;
-    height: 100px;
+.foto:hover .cruz-delete-foto {
+    opacity: 0.8;
     border: 1px solid #333;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Reglas generales aplicables a cualquier HTML */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 500px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
     box-sizing: border-box;
-    background-color: #f0f0f0;
+}
+
+input[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.foto i {
+    font-size: 40px;
+    color: #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    overflow: hidden; /* Para ajustar la imagen al tamaño de la caja */
-    position: relative;
-}
-.fotoProductoInsert img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.file-input {
-    display: none; /* Oculta el input de archivo */
-}
-.cruz-delete-foto{
-    opacity: 0;
-    position: absolute;
-    font-size: 80px;
-    color: black;
-    text-decoration: none;
-    text-align: center;
-    display: block;
     height: 100%;
     width: 100%;
 }
-.foto:hover .cruz-delete-foto{
-    opacity: 0.8;
-    border:1px solid #333;
-    background-color: rgba(0, 0, 0, 0.4);
+
+.foto:hover i {
+    color: #333;
+}
+
+/* Estilos para tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.caption {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
 }

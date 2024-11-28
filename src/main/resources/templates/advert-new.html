@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Crear anuncio</title>
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
   <form th:action="@{/anuncios/new}" method="post" th:object="${advert}" enctype="multipart/form-data">
