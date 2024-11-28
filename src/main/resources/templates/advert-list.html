@@ -6,6 +6,17 @@
     <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
+<header>
+    <nav>
+        <!-- Verifica si el usuario es admin -->
+        <ul>
+            <li><a th:href="@{/anuncios}">Ver anuncios</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/register}">Registrar</a></li>
+            <li><a th:href="@{/logout}">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+</header>
     <table>
         <thead>
             <tr>

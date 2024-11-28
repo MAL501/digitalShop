@@ -7,6 +7,7 @@ import com.shop.wallapop.entity.User;
 import com.shop.wallapop.repository.UserRepository;
 import com.shop.wallapop.service.AdvertService;
 import com.shop.wallapop.service.PictureService;
+import com.shop.wallapop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -29,15 +30,17 @@ public class AdvertController {
     private final AdvertService advertService;
     private final PictureService pictureService;
     private final UserRepository userRepository;
+    private final UserService userService;
     private User user;
     @Autowired
-    public AdvertController(AdvertService advertService, PictureService pictureService, UserRepository userRepository) {
+    public AdvertController(AdvertService advertService, PictureService pictureService, UserRepository userRepository, UserService userService) {
         this.advertService = advertService;
         this.pictureService = pictureService;
         this.user = new User();
         this.user.setPhone("66666");
         this.user.setPoblation("Cuenca");
         this.userRepository = userRepository;
+        this.userService = userService;
     }
     @GetMapping("/")
     public String index(Model model) {
@@ -50,9 +53,23 @@ public class AdvertController {
     }
     @PostMapping("/login")
     public String loginPost(@RequestParam(value = "userName") String name, @RequestParam(value = "password") String password) {
-        this.user.setUsername(name);
-        this.user.setPassword(password);
-        this.user.setEmail(this.user.getUsername()+"@gmail.com");
+        Optional<User> optional=userService.obtainUser(name);
+        User usuario=optional.get();
+        if(password.equals(usuario.getPassword())&&name.equals(usuario.getUsername())) {
+            this.user=usuario;
+            return "redirect:/anuncios";
+        }else{
+            return "redirect:/login";
+        }
+    }
+    @GetMapping("/register")
+    public String register(Model model){
+        model.addAttribute("user", this.user);
+        return "register";
+    }
+    @PostMapping("/register")
+    public String register(@Valid User user){
+        this.user = user;
         userRepository.save(this.user);
         return "redirect:/anuncios";
     }
@@ -69,6 +86,15 @@ public class AdvertController {
     public String advert(@PathVariable String user, Model model) {
         Integer count=0;
         List<Advertisement> adverts=advertService.obtainAllUserAds(user);
+        count=adverts.size();
+        model.addAttribute("count",count);
+        model.addAttribute("adverts",adverts);
+        return "advert-list";
+    }
+    @GetMapping("/misAnuncios")
+    public String myAdvert(Model model) {
+        Integer count=0;
+        List<Advertisement> adverts=advertService.obtainAllUserAds(this.user.getUsername());
         count=adverts.size();
         model.addAttribute("count",count);
         model.addAttribute("adverts",adverts);
@@ -137,5 +163,10 @@ public class AdvertController {
             pictureService.addFoto(archivoPicture, advert.get());
         }
         return "redirect:/anuncios/"+idAdvert+"/edit";
+    }
+    @GetMapping("/logout")
+    public String logout(){
+        this.user = new User();
+        return "redirect:/login";
     }
 }
