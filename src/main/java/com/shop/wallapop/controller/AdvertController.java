@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,15 +73,10 @@ public class AdvertController {
         model.addAttribute("adverts",adverts);
         return "advert-list";
     }
-    @GetMapping("/anuncios/{user}/{id}/del")
-    public String advert(@PathVariable String user, @PathVariable Long id, Model model) {
-        Integer count=0;
-        advertService.deleteAdvertById(id);
-        List<Advertisement> adverts=advertService.obtainAllUserAds(user);
-        count=adverts.size();
-        model.addAttribute("adverts",adverts);
-        model.addAttribute("count",count);
-        return "advert-list";
+    @GetMapping("/anuncios/{id}/del")
+    public String advert( Model model,@PathVariable Long id) {
+        advertService.deleteAdvertById(id,this.user);
+        return "redirect:/anuncios";
     }
     @GetMapping("/anuncios/ver/{id}")
     public String advert(@PathVariable Long id, Model model) {
@@ -98,10 +94,17 @@ public class AdvertController {
     }
     @PostMapping("/anuncios/new")
     public String newAdvert(@Valid Advertisement advert,
-                            @RequestParam(value = "picturesFiles") List<MultipartFile> picturesFiles){
+                            @RequestParam(value = "picturesFiles") List<MultipartFile> picturesFiles,
+                            Model model) {
+        try{
+            pictureService.guardarFotos(picturesFiles,advert);
+        }catch(IllegalArgumentException ex){
+            model.addAttribute("mensaje",ex.getMessage());
+            model.addAttribute("advert",new Advertisement());
+        }
         advert.setUser(user);
         advert.setCreatedAt(LocalDateTime.now());
-        advertService.saveAdvert(advert, picturesFiles);
+        advertService.saveAdvert(advert);
         return "redirect:/anuncios/ver/"+advert.getId();
     }
 

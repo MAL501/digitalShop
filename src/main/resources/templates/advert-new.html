@@ -5,28 +5,19 @@
   <title>Crear anuncio</title>
 </head>
 <body>
-  <form th:action="@{/anuncios/new}" method="post" th:object="${advert}">
+  <form th:action="@{/anuncios/new}" method="post" th:object="${advert}" enctype="multipart/form-data">
     Producto:<input type="text" th:field="${advert.title}"><br>
     Precio:<input type="number" th:field="${advert.price}"><br>
     Descripción:<textarea th:field="${advert.description}"></textarea><br>
     <div class="contenedorFotosProductosInsert" >
       <div class="fotoProductoInsert" onclick="triggerFileInput(this)">
-        <input type="file" name="archivosFotos" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
-      </div>
-      <div class="fotoProductoInsert" onclick="triggerFileInput(this)">
-        <input type="file" name="archivosFotos" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
-      </div>
-      <div class="fotoProductoInsert" onclick="triggerFileInput(this)">
-        <input type="file" name="archivosFotos" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
+        <input type="file" name="picturesFiles" class="file-input" accept="image/jpeg, image/png, image/gif, image/webp" onchange="previewImage(this)">
       </div>
     </div>
     <input type="submit" value="Crear">
   </form>
 
-
   <script>
-
-
     // Abre el cuadro de selección de archivos del input correspondiente
     function triggerFileInput(caja) {
       caja.querySelector('.file-input').click();
@@ -68,6 +59,7 @@
       }
     }
   </script>
+
 
 </body>
 </html>

@@ -22,7 +22,7 @@ import java.util.UUID;
 public class PictureService {
     private static final List<String> PERMITTED_TYPES = List.of("image/jpeg", "image/png", "image/gif", "image/avif", "image/webp");
     private static final long MAX_FILE_SIZE = 10000000;
-    private static final String UPLOADS_DIRECTORY = "uploads/imagesProductos";
+    private static final String UPLOADS_DIRECTORY = "uploads/advertsPictures";
 
     @Autowired
     PictureRepository pictureRepository;

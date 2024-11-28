@@ -13,8 +13,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> obtainUser(String email) {
-        Optional<User> usuario = userRepository.findByEmail(email);
+    public Optional<User> obtainUser(String username) {
+        Optional<User> usuario = userRepository.findByUsername(username);
         return usuario;
     }
     public void save(User usuario) {
